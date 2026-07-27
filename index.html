@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kulhavn — Engineered Exploration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --void: #1b2132; --navy: #283147; --charcoal: #45454C; --charcoal-light: #55555e;
+    --army: #5E6B42; --army-bright: #A9BC8B; --army-dim: #47512f;
+    --silver: #9CA3AF; --ice: #F5F6F6; --rule: rgba(245,246,246,0.10);
+  }
+  html { scroll-behavior: smooth; }
+  body { background: var(--void); color: var(--ice); font-family: 'Oswald', sans-serif; font-weight: 300; line-height: 1.6; overflow-x: hidden; }
+  body::before {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1000; opacity: 0.4;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cg fill='none' stroke='%23A9BC8B' stroke-width='0.6' opacity='0.05'%3E%3Ccircle cx='120' cy='120' r='40'/%3E%3Ccircle cx='120' cy='120' r='80'/%3E%3Ccircle cx='120' cy='120' r='120'/%3E%3C/g%3E%3C/svg%3E");
+    background-size: 240px 240px;
+  }
+
+  /* CORNER TICKS — signature element: drafting/survey-mark corners on featured panels */
+  .tick { position: relative; }
+  .tick::before, .tick::after { content: ''; position: absolute; width: 14px; height: 14px; border: 1px solid var(--army-bright); opacity: 0.55; pointer-events: none; }
+  .tick::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .tick::after { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+
+  /* HERO */
+  .hero { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; position: relative; overflow: hidden; background: var(--void); }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 65% 55% at 82% 22%, rgba(94,107,66,0.14) 0%, transparent 70%), radial-gradient(ellipse 45% 60% at 8% 85%, rgba(40,49,71,0.5) 0%, transparent 60%); }
+  .hero-contour { position: absolute; inset: 0; opacity: 0.35;
+    background-image:
+      repeating-radial-gradient(ellipse 140% 90% at 100% 0%, transparent 0, transparent 42px, rgba(169,188,139,0.06) 43px, rgba(169,188,139,0.06) 44px);
+  }
+
+  nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 2rem 4rem; border-bottom: 1px solid var(--rule); }
+  .nav-left { display: flex; align-items: baseline; gap: 1rem; }
+  .nav-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 0.15em; color: var(--ice); }
+  .nav-sub { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--army-bright); }
+  .nav-ig { font-family: 'Oswald', sans-serif; font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver); text-decoration: none; border: 1px solid var(--rule); padding: 0.5rem 1.1rem; transition: border-color 0.2s, color 0.2s; }
+  .nav-ig:hover { border-color: var(--army-bright); color: var(--army-bright); }
+
+  .hero-content { position: relative; z-index: 10; display: flex; flex-direction: column; justify-content: center; padding: 4rem 4rem 2rem; max-width: 980px; }
+  .hero-eyebrow { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.8rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--army-bright); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+  .hero-eyebrow::before { content: ''; display: block; width: 40px; height: 1px; background: var(--army-bright); }
+
+  h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.4rem, 8vw, 7.5rem); line-height: 0.95; letter-spacing: 0.02em; color: var(--ice); margin-bottom: 2rem; }
+  h1 span { color: var(--army-bright); display: block; }
+
+  .hero-sub { font-size: 1.1rem; font-weight: 300; color: var(--silver); max-width: 640px; line-height: 1.8; margin-bottom: 1.2rem; }
+  .hero-sub strong { color: var(--ice); font-weight: 600; }
+  .hero-tag { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.8rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--army-bright); margin-bottom: 2.5rem; }
+
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-primary { font-family: 'Oswald', sans-serif; font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase; background: var(--ice); color: var(--void); border: none; padding: 1rem 2.5rem; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-block; transition: background 0.2s, transform 0.15s; clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%); }
+  .btn-primary:hover { background: var(--army-bright); transform: translateY(-2px); }
+  .btn-ghost { font-family: 'Oswald', sans-serif; font-size: 0.9rem; letter-spacing: 0.12em; text-transform: uppercase; background: transparent; color: var(--ice); border: 1px solid var(--rule); padding: 1rem 2.5rem; cursor: pointer; font-weight: 500; text-decoration: none; display: inline-block; transition: border-color 0.2s, color 0.2s; }
+  .btn-ghost:hover { border-color: var(--army-bright); color: var(--army-bright); }
+
+  .hero-stats { position: relative; z-index: 10; display: flex; border-top: 1px solid var(--rule); }
+  .stat { padding: 1.8rem 3rem; border-right: 1px solid var(--rule); flex: 1; }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--army-bright); line-height: 1; margin-bottom: 0.25rem; }
+  .stat-label { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--silver); }
+
+  /* SHARED */
+  section { padding: 6rem 4rem; border-top: 1px solid var(--rule); }
+  .section-eyebrow { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--army-bright); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; }
+  .section-eyebrow::before { content: ''; display: block; width: 28px; height: 1px; background: var(--army-bright); }
+  h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.3rem, 4.5vw, 4rem); line-height: 1; letter-spacing: 0.03em; margin-bottom: 1.5rem; }
+
+  /* CONCEPT */
+  .concept-section { background: var(--navy); }
+  .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 3rem; align-items: start; }
+  .concept-body { font-size: 1.05rem; color: var(--silver); line-height: 1.85; }
+  .concept-body p + p { margin-top: 1.2rem; }
+  .concept-body strong { color: var(--ice); font-weight: 600; }
+  .pillars { display: flex; flex-direction: column; }
+  .pillar { padding: 1.4rem 0; border-bottom: 1px solid var(--rule); display: flex; gap: 1.4rem; align-items: flex-start; }
+  .pillar:first-child { border-top: 1px solid var(--rule); }
+  .pillar-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--charcoal-light); line-height: 1; flex-shrink: 0; width: 36px; }
+  .pillar-title { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--army-bright); margin-bottom: 0.3rem; }
+  .pillar-body { font-size: 0.88rem; color: var(--silver); line-height: 1.65; }
+
+  /* EES RELATIONSHIP */
+  .ees-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; margin-top: 3rem; align-items: start; }
+  .ees-body { font-size: 1.05rem; color: var(--silver); line-height: 1.85; }
+  .ees-body p + p { margin-top: 1.2rem; }
+  .ees-body strong { color: var(--ice); font-weight: 600; }
+  .ees-cards { display: flex; flex-direction: column; gap: 1px; }
+  .ees-card { background: var(--charcoal); border: 1px solid var(--rule); padding: 1.4rem 1.6rem; }
+  .ees-card-title { font-family: 'Oswald', sans-serif; font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--army-bright); margin-bottom: 0.4rem; }
+  .ees-card-body { font-size: 0.85rem; color: var(--silver); line-height: 1.6; }
+
+  /* STRUCTURE — kept deliberately brief and vague */
+  .structure-section { background: var(--navy); }
+  .structure-intro { max-width: 720px; margin-bottom: 3rem; }
+  .structure-intro p { font-size: 1.05rem; color: var(--silver); line-height: 1.8; }
+  .structure-intro p + p { margin-top: 1rem; }
+  .structure-intro strong { color: var(--ice); font-weight: 600; }
+  .principle-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .principle-card { background: var(--void); padding: 2rem 1.8rem; }
+  .principle-title { font-family: 'Oswald', sans-serif; font-size: 0.95rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--ice); margin-bottom: 0.7rem; }
+  .principle-body { font-size: 0.85rem; color: var(--silver); line-height: 1.65; }
+
+  /* INCOME */
+  .income-section { background: var(--charcoal); }
+  .flow { display: flex; flex-direction: column; margin-top: 3rem; }
+  .flow-row { display: grid; gap: 1px; }
+  .flow-row-1 { grid-template-columns: 1fr; }
+  .flow-row-5 { grid-template-columns: repeat(5, 1fr); }
+  .flow-connector { display: flex; justify-content: center; padding: 0.6rem 0; }
+  .flow-connector svg { width: 20px; height: 20px; stroke: var(--army-bright); fill: none; }
+  .flow-box { background: var(--navy); border: 1px solid var(--rule); padding: 1.4rem 1.2rem; transition: border-color 0.2s, background 0.2s; }
+  .flow-box:hover { border-color: var(--army); }
+  .flow-box.highlight { border-color: var(--army-bright); background: rgba(169,188,139,0.06); }
+  .flow-box.highlight .flow-box-title { color: var(--army-bright); }
+  .flow-box-label { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--silver); margin-bottom: 0.4rem; }
+  .flow-box-title { font-family: 'Oswald', sans-serif; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--ice); margin-bottom: 0.3rem; }
+  .flow-box-desc { font-size: 0.78rem; color: var(--silver); line-height: 1.55; }
+
+  /* JOIN */
+  .join-section { background: var(--navy); }
+  .join-intro { max-width: 700px; font-size: 1.05rem; color: var(--silver); line-height: 1.8; margin-bottom: 3.5rem; }
+  .join-intro strong { color: var(--ice); font-weight: 600; }
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 3rem; }
+  .tier { background: var(--void); padding: 2.4rem 2rem; display: flex; flex-direction: column; }
+  .tier.featured { background: rgba(169,188,139,0.05); border: 1px solid var(--army); margin: -1px; z-index: 1; }
+  .tier-badge { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--army-bright); margin-bottom: 1rem; }
+  .tier-name { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--ice); line-height: 1; margin-bottom: 0.5rem; }
+  .tier-price { font-family: 'Oswald', sans-serif; font-size: 0.8rem; color: var(--silver); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--rule); }
+  .tier-features { list-style: none; flex: 1; margin-bottom: 2rem; }
+  .tier-features li { font-size: 0.88rem; color: var(--silver); padding: 0.5rem 0; border-bottom: 1px solid rgba(245,246,246,0.05); display: flex; gap: 0.8rem; }
+  .tier-features li::before { content: '—'; color: var(--army-bright); flex-shrink: 0; font-size: 0.75rem; margin-top: 0.05rem; }
+
+  /* CURRENTLY ON THE ROAD */
+  .been-section { background: var(--void); }
+  .been-body { max-width: 640px; font-size: 1.05rem; color: var(--silver); line-height: 1.8; margin-bottom: 3rem; }
+  .been-body strong { color: var(--ice); font-weight: 600; }
+  .route-strip { display: flex; flex-wrap: wrap; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-bottom: 2.5rem; }
+  .route-stop { background: var(--navy); padding: 1rem 1.4rem; flex: 1; min-width: 150px; }
+  .route-stop-label { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--silver); margin-bottom: 0.3rem; }
+  .route-stop-name { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 0.9rem; color: var(--ice); }
+  .route-stop.live .route-stop-name { color: var(--army-bright); }
+
+  /* ROUTES */
+  .routes-section { background: var(--charcoal); }
+  .dest-intro { max-width: 640px; font-size: 1.05rem; color: var(--silver); line-height: 1.8; margin-bottom: 3rem; }
+  .dest-intro strong { color: var(--ice); font-weight: 600; }
+  .destinations { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+  .destination { background: var(--navy); padding: 2rem 1.6rem; transition: background 0.2s; }
+  .destination:hover { background: var(--charcoal-light); }
+  .dest-region { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--silver); margin-bottom: 0.5rem; }
+  .dest-name { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--army-bright); line-height: 1; margin-bottom: 1rem; }
+  .dest-detail { font-size: 0.85rem; color: var(--silver); line-height: 1.7; }
+  .dest-detail li { list-style: none; padding-left: 1rem; position: relative; margin-bottom: 0.3rem; }
+  .dest-detail li::before { content: '—'; position: absolute; left: 0; color: var(--army); font-size: 0.75rem; }
+
+  /* PARTNER */
+  .partner-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 3rem; }
+  .partner-card { background: var(--navy); padding: 2.4rem 2rem; transition: background 0.2s; }
+  .partner-card:hover { background: var(--charcoal); }
+  .partner-num { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: var(--charcoal-light); line-height: 1; margin-bottom: 1rem; }
+  .partner-title { font-family: 'Oswald', sans-serif; font-size: 1.1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; color: var(--army-bright); margin-bottom: 0.8rem; }
+  .partner-body { font-size: 0.9rem; color: var(--silver); line-height: 1.7; }
+  .partner-eg { margin-top: 1rem; font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--army); }
+
+  /* CONTACT */
+  .contact-section { background: var(--navy); text-align: center; }
+  .contact-inner { max-width: 640px; margin: 0 auto; }
+  .contact-body { font-size: 1.05rem; color: var(--silver); line-height: 1.85; margin-bottom: 2.5rem; }
+  .contact-body strong { color: var(--ice); font-weight: 600; }
+  .contact-sub { margin-top: 1.2rem; font-size: 0.85rem; color: var(--silver); }
+  .contact-powered { margin-top: 2rem; font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--charcoal-light); }
+
+  /* FOOTER */
+  footer { padding: 2rem 4rem; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; letter-spacing: 0.15em; color: var(--ice); }
+  .footer-powered { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--silver); }
+  .footer-note { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--charcoal-light); }
+  .footer-ig { font-family: 'Oswald', sans-serif; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--army-bright); text-decoration: none; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  .hero-eyebrow { animation: fadeUp 0.6s ease both; }
+  h1 { animation: fadeUp 0.6s 0.1s ease both; }
+  .hero-tag { animation: fadeUp 0.6s 0.15s ease both; }
+  .hero-sub { animation: fadeUp 0.6s 0.2s ease both; }
+  .hero-cta { animation: fadeUp 0.6s 0.3s ease both; }
+  .hero-stats { animation: fadeUp 0.6s 0.4s ease both; }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-eyebrow, h1, .hero-tag, .hero-sub, .hero-cta, .hero-stats { animation: none; }
+    html { scroll-behavior: auto; }
+  }
+
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--army-bright); outline-offset: 2px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-sub { display: none; }
+    section { padding: 3.5rem 1.5rem; }
+    footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    .hero-content { padding: 2.5rem 1.5rem 1.5rem; }
+    .hero-sub { font-size: 1rem; }
+    .concept-grid, .ees-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .principle-row { grid-template-columns: 1fr; }
+    .flow-row-5 { grid-template-columns: 1fr 1fr; }
+    .tiers, .partner-grid { grid-template-columns: 1fr; }
+    .destinations { grid-template-columns: repeat(2, 1fr); }
+    .hero-stats { flex-direction: column; }
+    .stat { border-right: none; border-bottom: 1px solid var(--rule); padding: 1.2rem 1.5rem; }
+  }
+  @media (max-width: 480px) {
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2rem; }
+    .destinations { grid-template-columns: 1fr; }
+    .flow-row-5 { grid-template-columns: 1fr; }
+    .btn-primary, .btn-ghost { padding: 0.9rem 1.8rem; font-size: 0.85rem; }
+    .nav-logo { font-size: 1.4rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-contour"></div>
+  <nav>
+    <div class="nav-left">
+      <div class="nav-logo">KULHAVN</div>
+      <div class="nav-sub">Engineered Exploration</div>
+    </div>
+    <a href="https://instagram.com/kulhavn" target="_blank" rel="noopener" class="nav-ig">@kulhavn</a>
+  </nav>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Engineering-led touring &middot; Norway &middot; Denmark &middot; Ireland &middot; Australia</div>
+    <h1>Exploration, <span>Engineered.</span></h1>
+    <div class="hero-tag">Powered by the EES QLD legacy</div>
+    <p class="hero-sub">
+      <strong>Kulhavn</strong> is an engineering-led adventure and expedition brand founded by Andrew Mitchell CPEng — built on a decade of engineering Australia's coal port infrastructure and a lifetime spent on the road. At home, that's a 79 Series LandCruiser with Travelander camper on some routes, a Suzuki DR650 on others, and an E-MTB for the ground nothing else reaches. Overseas, it's on foot, on borrowed wheels, and whatever the terrain calls for.
+    </p>
+    <p class="hero-sub">The name is Danish for "coal port" — ten years engineering Australia's coal export infrastructure, and a nod to pioneering Danish ancestry behind it.</p>
+    <div class="hero-cta" style="margin-top: 2rem;">
+      <a href="https://instagram.com/kulhavn" target="_blank" rel="noopener" class="btn-primary">Follow on Instagram</a>
+      <a href="#partner" class="btn-ghost">Partner with Kulhavn</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">CPEng</div>
+      <div class="stat-label">Chartered professional engineer &middot; RPEQ</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">Years engineering and project delivery</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Routes &mdash; Norway &middot; Denmark &middot; Ireland &middot; Australia</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">EES QLD</div>
+      <div class="stat-label">Engineering legacy behind the brand</div>
+    </div>
+  </div>
+</div>
+
+<!-- THE CONCEPT -->
+<section class="concept-section">
+  <div class="section-eyebrow">The concept</div>
+  <h2>Engineering-led. Field-tested. Zero filler.</h2>
+  <div class="concept-grid">
+    <div class="concept-body">
+      <p>Kulhavn is built on a simple idea: combine genuine engineering experience, infrastructure curiosity and remote field travel into content worth following — not manufactured adventure, not lifestyle filler.</p>
+      <p><strong>The riding is real, so the content is real.</strong> Every route is tracked on Relive, documented as it happens, and posted without the sentimentality. Terrain does the talking.</p>
+      <p>Engineering credibility is the differentiator — always present, never shouted. Kulhavn sits beside the EES QLD legacy, not in front of it.</p>
+      <p>This is a long build. Audience and content come first. Structure follows once there's something worth structuring.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-num">01</div>
+        <div>
+          <div class="pillar-title">Field, not fashion</div>
+          <div class="pillar-body">Motorbike touring, overland travel and E-MTB riding across terrain chosen for what it actually demands — not for how it photographs.</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">02</div>
+        <div>
+          <div class="pillar-title">Content that compounds</div>
+          <div class="pillar-body">Every route produces Reels, stats and route data. That content builds a specific audience over time — engineers, project professionals, technically-minded travellers.</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">03</div>
+        <div>
+          <div class="pillar-title">Ancestry, in the background</div>
+          <div class="pillar-body">Every country on the route has a genuine family connection behind it. It's part of why these routes exist — more of that story surfaces over time.</div>
+        </div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-num">04</div>
+        <div>
+          <div class="pillar-title">A community that grows</div>
+          <div class="pillar-body">The people who follow Kulhavn are engineers, builders, travellers and operators interested in field work and properly built adventure — not passengers.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EES QLD RELATIONSHIP -->
+<section class="ees-section">
+  <div class="section-eyebrow">The legacy</div>
+  <h2>Powered by EES QLD.</h2>
+  <div class="ees-grid">
+    <div class="ees-body">
+      <p>Kulhavn does not replace EES QLD. It sits beside it.</p>
+      <p><strong>EES QLD remains the serious engineering business</strong> — certification, project delivery, industrial consulting, RPEQ sign-off and client delivery. That legacy doesn't change.</p>
+      <p>Kulhavn is the public-facing expedition and infrastructure media brand that the EES QLD legacy makes credible. Without the engineering background, Kulhavn is just another travel account. With it, Kulhavn is something else — technically grounded and genuinely field-tested.</p>
+      <p>Founded by Andrew Mitchell CPEng, Principal Engineer of EES QLD. The credibility is real because the work is real.</p>
+    </div>
+    <div class="ees-cards">
+      <div class="ees-card">
+        <div class="ees-card-title">EES QLD provides</div>
+        <div class="ees-card-body">Engineering credibility &middot; RPEQ registration &middot; project delivery background &middot; industrial experience &middot; professional authority</div>
+      </div>
+      <div class="ees-card">
+        <div class="ees-card-title">Kulhavn provides</div>
+        <div class="ees-card-body">Travel media &middot; content production &middot; brand partnerships &middot; expedition storytelling &middot; ancestry-driven route selection</div>
+      </div>
+      <div class="ees-card">
+        <div class="ees-card-title">Together</div>
+        <div class="ees-card-body">A credible engineering-led adventure brand that a generic lifestyle account can't replicate — because it doesn't have the field experience underneath it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRUCTURE — deliberately brief -->
+<section class="structure-section">
+  <div class="section-eyebrow">How it's built</div>
+  <h2>Built properly. Built to last.</h2>
+  <div class="structure-intro">
+    <p>Kulhavn sits beside the existing engineering business, not in front of it — separated where it needs to be, and properly advised before anything commercial is committed to.</p>
+  </div>
+  <div class="principle-row">
+    <div class="principle-card">
+      <div class="principle-title">Kept separate</div>
+      <div class="principle-body">Media, travel and brand activity sit apart from EES QLD's engineering certification and professional indemnity exposure.</div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-title">Properly advised</div>
+      <div class="principle-body">Nothing commercial gets committed to on assumption — real advice comes first, every time.</div>
+    </div>
+    <div class="principle-card">
+      <div class="principle-title">Audience first</div>
+      <div class="principle-body">The current focus is building a real following through genuine content. Commercial structure comes once there's something worth structuring.</div>
+    </div>
+  </div>
+</section>
+
+<!-- INCOME MODEL -->
+<section class="income-section">
+  <div class="section-eyebrow">The income model</div>
+  <h2>How Kulhavn earns, over time.</h2>
+  <div class="flow">
+    <div class="flow-row flow-row-1">
+      <div class="flow-box highlight">
+        <div class="flow-box-label">The differentiator</div>
+        <div class="flow-box-title">Engineering credibility + field travel + content</div>
+        <div class="flow-box-desc">CPEng credentials and 15+ years of real engineering experience create trust a generic lifestyle brand doesn't have. The content documents genuine field work.</div>
+      </div>
+    </div>
+    <div class="flow-connector"><svg viewBox="0 0 24 24"><polyline points="12 5 12 19"/><polyline points="6 13 12 19 18 13"/></svg></div>
+    <div class="flow-row flow-row-1">
+      <div class="flow-box highlight">
+        <div class="flow-box-label">The asset</div>
+        <div class="flow-box-title">A niche, engaged audience builds</div>
+        <div class="flow-box-desc">Engineers, project managers, contractors and technically-minded travellers — a smaller, specific audience worth more to the right commercial partners.</div>
+      </div>
+    </div>
+    <div class="flow-connector"><svg viewBox="0 0 24 24"><polyline points="12 5 12 19"/><polyline points="6 13 12 19 18 13"/></svg></div>
+    <div class="flow-row flow-row-5">
+      <div class="flow-box">
+        <div class="flow-box-label">Stream 1</div>
+        <div class="flow-box-title">Sponsorship</div>
+        <div class="flow-box-desc">Route sponsorships and product placement with aligned technical and travel brands</div>
+      </div>
+      <div class="flow-box">
+        <div class="flow-box-label">Stream 2</div>
+        <div class="flow-box-title">Affiliate</div>
+        <div class="flow-box-desc">Commission from gear, travel platforms and field equipment</div>
+      </div>
+      <div class="flow-box">
+        <div class="flow-box-label">Stream 3</div>
+        <div class="flow-box-title">Content revenue</div>
+        <div class="flow-box-desc">Platform revenue from a growing library of Reels and long-form content</div>
+      </div>
+      <div class="flow-box">
+        <div class="flow-box-label">Stream 4</div>
+        <div class="flow-box-title">Digital products</div>
+        <div class="flow-box-desc">Trip workflows, field systems and route guides — created once, sold repeatedly</div>
+      </div>
+      <div class="flow-box">
+        <div class="flow-box-label">Stream 5</div>
+        <div class="flow-box-title">Project leads</div>
+        <div class="flow-box-desc">Content profile attracts engineering and advisory enquiries back into EES QLD</div>
+      </div>
+    </div>
+    <div class="flow-connector"><svg viewBox="0 0 24 24"><polyline points="12 5 12 19"/><polyline points="6 13 12 19 18 13"/></svg></div>
+    <div class="flow-row flow-row-1">
+      <div class="flow-box highlight">
+        <div class="flow-box-label">The result</div>
+        <div class="flow-box-title">An engineering-led adventure and media brand</div>
+        <div class="flow-box-desc">Built with genuine intent and real income-producing activity, once the audience is there to support it. Enquire directly to discuss commercial arrangements.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOIN -->
+<section id="join" class="join-section">
+  <div class="section-eyebrow">Travel with Kulhavn</div>
+  <h2>Join the journey.<br>Not just the holiday.</h2>
+  <p class="join-intro">Kulhavn is not a tour company. It's an engineering-led adventure brand documenting real routes in real time. A small number of people may be invited to join a leg, collaborate on content, or partner with the brand.</p>
+  <div class="tiers">
+    <div class="tier">
+      <div class="tier-badge">Entry level</div>
+      <div class="tier-name">Follower</div>
+      <div class="tier-price">Free &mdash; join on Instagram</div>
+      <ul class="tier-features">
+        <li>Follow every route as it posts, @kulhavn</li>
+        <li>Watch the content as it's produced</li>
+        <li>Route data and field stats behind every Reel</li>
+        <li>Community updates and route announcements</li>
+      </ul>
+      <a href="https://instagram.com/kulhavn" target="_blank" rel="noopener" class="btn-ghost" style="text-align:center;">Follow along</a>
+    </div>
+    <div class="tier featured tick">
+      <div class="tier-badge">Selective intake</div>
+      <div class="tier-name">Participant</div>
+      <div class="tier-price">Expression of interest</div>
+      <ul class="tier-features">
+        <li>Join a route leg with the Kulhavn operation</li>
+        <li>Travel with the team &mdash; not a tour group</li>
+        <li>Appear in authentic, credited content</li>
+        <li>Direct access to the model &mdash; not a package deal</li>
+      </ul>
+      <a href="#contact" class="btn-primary" style="text-align:center; display:block;">Register interest</a>
+    </div>
+    <div class="tier">
+      <div class="tier-badge">Commercial</div>
+      <div class="tier-name">Partner</div>
+      <div class="tier-price">Brand &amp; commercial enquiries</div>
+      <ul class="tier-features">
+        <li>Route sponsorship and content series</li>
+        <li>Product placement and field testing</li>
+        <li>Affiliate programme integration</li>
+        <li>Revenue share discussions welcome</li>
+      </ul>
+      <a href="#contact" class="btn-ghost" style="text-align:center;">Get in touch</a>
+    </div>
+  </div>
+</section>
+
+<!-- CURRENTLY ON THE ROAD -->
+<section class="been-section">
+  <div class="section-eyebrow">On the road now</div>
+  <h2>Europe 2026 — live on @kulhavn.</h2>
+  <p class="been-body">The current series runs Norway into Denmark into Ireland, posting in sequence. Lofoten's Ryten and Blåmanen are up now, Denmark and the Ireland ancestry pivot are next. <strong>Every post carries real route data — no filler.</strong></p>
+  <div class="route-strip">
+    <div class="route-stop live">
+      <div class="route-stop-label">Norway &mdash; live</div>
+      <div class="route-stop-name">Lofoten &middot; Ryten &middot; Bl&aring;manen</div>
+    </div>
+    <div class="route-stop">
+      <div class="route-stop-label">Denmark &mdash; next</div>
+      <div class="route-stop-name">Copenhagen &middot; Ferguson Museum</div>
+    </div>
+    <div class="route-stop">
+      <div class="route-stop-label">Ireland &mdash; queued</div>
+      <div class="route-stop-name">Cork &middot; Tuam &middot; Spike Island</div>
+    </div>
+  </div>
+  <div style="text-align:center;">
+    <a href="https://instagram.com/kulhavn" target="_blank" rel="noopener" class="btn-primary">Follow the 2026 series on Instagram</a>
+  </div>
+</section>
+
+<!-- ROUTES -->
+<section class="routes-section">
+  <div class="section-eyebrow">Where Kulhavn goes</div>
+  <h2>Ride it. Drive it. Film it.</h2>
+  <p class="dest-intro">Every route is planned around terrain, engineering interest and a genuine family connection to the country. In Australia, that's the 79 Series with Travelander or the DR650, depending on the leg, with the E-MTB for the ground nothing else reaches. Norway, Denmark and Ireland run on foot and local transport — terrain and ancestry drive the route, not the rig. Relive tracks every ride.</p>
+  <div class="destinations">
+    <div class="destination">
+      <div class="dest-region">Scandinavia &middot; live</div>
+      <div class="dest-name">Norway</div>
+      <ul class="dest-detail">
+        <li>Lofoten &middot; Ryten &middot; Bl&aring;manen &middot; Husfjellet</li>
+        <li>Non-assisted MTB &middot; bike carried on foot</li>
+        <li>Midnight boat runs &middot; fjord country</li>
+        <li>Tone: dramatic, technical, northern</li>
+      </ul>
+    </div>
+    <div class="destination">
+      <div class="dest-region">Northern Europe &middot; next</div>
+      <div class="dest-name">Denmark</div>
+      <ul class="dest-detail">
+        <li>Danmarks Ferguson Museum collaboration</li>
+        <li>The Danish word behind the Kulhavn name</li>
+        <li>Practical systems and infrastructure</li>
+        <li>Tone: curious, accessible, clean</li>
+      </ul>
+    </div>
+    <div class="destination">
+      <div class="dest-region">North Atlantic &middot; queued</div>
+      <div class="dest-name">Ireland</div>
+      <ul class="dest-detail">
+        <li>Spike Island &amp; Fort Mitchel</li>
+        <li>Tuam &middot; Dunmore &middot; Cliffs of Moher</li>
+        <li>A direct ancestral line to the Kulhavn name</li>
+        <li>Tone: reflective, grounded, human</li>
+      </ul>
+    </div>
+    <div class="destination">
+      <div class="dest-region">Home base &middot; Queensland &amp; beyond</div>
+      <div class="dest-name">Australia</div>
+      <ul class="dest-detail">
+        <li>79 Series Travelander &mdash; range and camp</li>
+        <li>DR650 &mdash; light and nimble</li>
+        <li>Sarina &middot; Mackay &middot; Central QLD &middot; outback</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SETUP -->
+<section style="background: var(--void);">
+  <div class="section-eyebrow">The setup</div>
+  <h2>The rig. The bike. The trail.</h2>
+  <p style="max-width:680px;font-size:1.05rem;color:var(--silver);line-height:1.8;margin-bottom:3rem;">Kulhavn Australia routes run on whichever rig actually suits the ground — never both at once. The 79 Series and Travelander go where range and camp matter most. The DR650 goes where a lighter, simpler bike gets further. The E-MTB handles the singletrack neither one can reach. Relive captures every ride.</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule);">
+    <div style="background:var(--navy);padding:2rem 1.8rem;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--charcoal-light);line-height:1;margin-bottom:0.5rem;">01</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--army-bright);margin-bottom:0.8rem;">79 Series + Travelander</div>
+      <div style="font-size:0.9rem;color:var(--silver);line-height:1.7;">LandCruiser 79 Series with Travelander camper. Carries camp, E-MTB, tools, camera gear, recovery kit and enough range to go places that don't have options.</div>
+    </div>
+    <div style="background:var(--navy);padding:2rem 1.8rem;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--charcoal-light);line-height:1;margin-bottom:0.5rem;">02</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--army-bright);margin-bottom:0.8rem;">Suzuki DR650</div>
+      <div style="font-size:0.9rem;color:var(--silver);line-height:1.7;">Light, simple, fixable anywhere and capable on dirt and bitumen equally. Runs on the routes where a smaller, nimbler bike makes more sense than the 79. Tracked on Relive.</div>
+    </div>
+    <div style="background:var(--navy);padding:2rem 1.8rem;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:2.8rem;color:var(--charcoal-light);line-height:1;margin-bottom:0.5rem;">03</div>
+      <div style="font-family:'Oswald',sans-serif;font-size:1.1rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--army-bright);margin-bottom:0.8rem;">E-MTB</div>
+      <div style="font-size:0.9rem;color:var(--silver);line-height:1.7;">For the trails nothing with an engine can reach. Carried on the Travelander when the 79 is on route. Every ride tracked on Relive and published.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER -->
+<section id="partner" class="partner-section">
+  <div class="section-eyebrow">Brand partnerships</div>
+  <h2>Where your brand fits in.</h2>
+  <div class="partner-grid">
+    <div class="partner-card">
+      <div class="partner-num">01</div>
+      <div class="partner-title">Gear &amp; Equipment</div>
+      <div class="partner-body">Field-tested placement in Reels, route content and documentation. Engineering-grade reviews from someone who uses gear on-site and on the road. Real use, real field context.</div>
+      <div class="partner-eg">Tools &middot; PPE &middot; camera gear &middot; vehicle equipment &middot; field systems</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-num">02</div>
+      <div class="partner-title">Travel &amp; Accommodation</div>
+      <div class="partner-body">Kulhavn documents real journeys with a professional audience. Accommodation providers, ferries, travel apps and tourism boards can reach technically minded travellers and project professionals.</div>
+      <div class="partner-eg">Campsites &middot; booking platforms &middot; travel apps &middot; ferry operators &middot; tourism boards</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-num">03</div>
+      <div class="partner-title">Affiliate &amp; Performance</div>
+      <div class="partner-body">Simple performance partnerships. We link, you track, Kulhavn earns commission where the product genuinely fits the journey. No upfront commitment required.</div>
+      <div class="partner-eg">Tools &middot; travel gear &middot; software &middot; accommodation &middot; camera gear</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact-section">
+  <div class="contact-inner">
+    <div class="section-eyebrow" style="justify-content:center;">Get involved</div>
+    <h2>Ready to be part of it?</h2>
+    <p class="contact-body">Whether you want to <strong>follow the journey, join a route leg, partner your brand or sponsor a leg of the operation</strong> &mdash; reach out. Kulhavn is selective by design.</p>
+    <a href="mailto:admin@eesqld.com.au" class="btn-primary">Make contact</a>
+    <p class="contact-sub">admin@eesqld.com.au &nbsp;&middot;&nbsp; <a href="https://instagram.com/kulhavn" target="_blank" rel="noopener" style="color:var(--army-bright);text-decoration:none;">@kulhavn</a></p>
+    <p class="contact-powered" style="margin-top: 2rem;">Kulhavn &nbsp;&middot;&nbsp; Powered by the EES QLD legacy &nbsp;&middot;&nbsp; Founded by Andrew Mitchell CPEng</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">KULHAVN</div>
+  <a href="https://instagram.com/kulhavn" target="_blank" rel="noopener" class="footer-ig">@kulhavn</a>
+  <div class="footer-powered">Powered by EES QLD &nbsp;&middot;&nbsp; Founded by Andrew Mitchell CPEng</div>
+  <div class="footer-note">Queensland, Australia &nbsp;&middot;&nbsp; Engineered Exploration</div>
+</footer>
+
+</body>
+</html>
