@@ -163,6 +163,7 @@
   .dest-detail { font-size: 0.85rem; color: var(--silver); line-height: 1.7; }
   .dest-detail li { list-style: none; padding-left: 1rem; position: relative; margin-bottom: 0.3rem; }
   .dest-detail li::before { content: '—'; position: absolute; left: 0; color: var(--army); font-size: 0.75rem; }
+  .destination.has-photo { padding: 0; display: flex; flex-direction: column; }
 
   /* PARTNER */
   .partner-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 3rem; }
@@ -539,14 +540,21 @@
         <li>Tone: reflective, grounded, human</li>
       </ul>
     </div>
-    <div class="destination">
-      <div class="dest-region">Home base &middot; Queensland &amp; beyond</div>
-      <div class="dest-name">Australia</div>
-      <ul class="dest-detail">
-        <li>79 Series Travelander &mdash; range and camp</li>
-        <li>DR650 &mdash; light and nimble</li>
-        <li>Sarina &middot; Mackay &middot; Central QLD &middot; outback</li>
-      </ul>
+    <div class="destination has-photo">
+      <picture>
+        <source srcset="images/gallery-australia-1200x1500.webp" media="(min-resolution: 1.5dppx)">
+        <img src="images/gallery-australia-600x750.webp" alt="DR650 rider cresting a dirt road in the Victorian High Country, dust trailing behind" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block;">
+      </picture>
+      <div style="padding:1.4rem 1.6rem 2rem;">
+        <div class="dest-region">Home base &middot; Queensland &amp; beyond</div>
+        <div class="dest-name">Australia</div>
+        <ul class="dest-detail">
+          <li>79 Series Travelander &mdash; range and camp</li>
+          <li>DR650 &mdash; light and nimble</li>
+          <li>Victorian High Country &middot; dirt and dust</li>
+          <li>Sarina &middot; Mackay &middot; Central QLD &middot; outback</li>
+        </ul>
+      </div>
     </div>
   </div>
 </section>
