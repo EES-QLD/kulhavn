@@ -166,6 +166,14 @@
   .dest-detail li::before { content: '—'; position: absolute; left: 0; color: var(--army); font-size: 0.75rem; }
   .destination.has-photo { padding: 0; display: flex; flex-direction: column; }
 
+  /* REEL STRIP — links out to Instagram Reels for a destination, in-system styling (no Instagram chrome) */
+  .reel-strip { display: flex; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 1.1rem; }
+  .reel-link { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.7rem 0.3rem; background: var(--void); text-decoration: none; transition: background 0.2s; }
+  .reel-link:hover { background: var(--charcoal-light); }
+  .reel-link svg { width: 14px; height: 14px; fill: var(--army-bright); }
+  .reel-link span { font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--silver); text-align: center; line-height: 1.3; }
+  .reel-link:hover span { color: var(--army-bright); }
+
   /* PARTNER */
   .partner-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 3rem; }
   .partner-card { background: var(--navy); padding: 2.4rem 2rem; transition: background 0.2s; }
@@ -326,12 +334,26 @@
           <li>Midnight boat runs &middot; fjord country</li>
           <li>Tone: dramatic, technical, northern</li>
         </ul>
+        <div class="reel-strip">
+          <a href="https://www.instagram.com/p/Dar09KZt9Rc/" target="_blank" rel="noopener" class="reel-link" aria-label="Watch the Lofoten archipelago reel on Instagram">
+            <svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
+            <span>Archipelago</span>
+          </a>
+          <a href="https://www.instagram.com/p/Dar09KZt9Rc/" target="_blank" rel="noopener" class="reel-link" aria-label="Watch the Reine lagoon reel on Instagram">
+            <svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
+            <span>Reine</span>
+          </a>
+          <a href="https://www.instagram.com/p/DbG8PbCs3YY/" target="_blank" rel="noopener" class="reel-link" aria-label="Watch the Ryten summit reel on Instagram">
+            <svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>
+            <span>Ryten</span>
+          </a>
+        </div>
       </div>
     </div>
     <div class="destination has-photo">
       <picture>
         <source srcset="images/gallery-denmark-1200x1500.webp" media="(min-resolution: 1.5dppx)">
-        <img src="images/gallery-denmark-600x750.webp" alt="Historic harbour crane at the entrance to Aarhus docks, Denmark" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block;">
+        <img src="images/gallery-denmark-600x750.webp" alt="The MF4880 Massey Ferguson tractor at Danmarks Ferguson Museum, Denmark" loading="lazy" style="width:100%;aspect-ratio:4/5;object-fit:cover;display:block;">
       </picture>
       <div style="padding:1.4rem 1.6rem 2rem;">
         <div class="dest-region">Northern Europe</div>
